@@ -1,0 +1,19 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#c8f464;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5dd4bf;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="text-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background rounded rectangle -->
+  <rect width="64" height="64" rx="12" fill="url(#bg-gradient)"/>
+  
+  <!-- RS Text -->
+  <text x="32" y="44" font-family="Arial, sans-serif" font-size="32" font-weight="800" text-anchor="middle" fill="url(#text-gradient)" letter-spacing="-1">RS</text>
+</svg>
