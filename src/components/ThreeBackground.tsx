@@ -136,46 +136,59 @@ export default function ThreeBackground({ isHovered = false }: ThreeBackgroundPr
             return thread;
         };
 
+        // Calculate responsive positions based on viewport
+        const isMobile = window.innerWidth < 768;
+        const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+        
+        // Adjust horizontal spread based on screen size
+        // Mobile: keep balloons closer and more visible initially
+        const horizontalSpread = isMobile ? 2 : isTablet ? 6 : 8;
+        const targetSpread = isMobile ? 2.5 : isTablet ? 4 : 5;
+        
+        // For mobile, start balloons in more visible positions
+        const initialVerticalTop = isMobile ? 2.5 : 5;
+        const initialVerticalBottom = isMobile ? -2.5 : -5;
+        
         // Define positions for 5 smaller balloons with threads
         const balloons = [
             // Top-left corner (yellow-green) - will form top of R
             createBalloon(
                 0xc8f464,
-                1.2,
-                new THREE.Vector3(-8, 5, -2),
-                new THREE.Vector3(-5, 2.5, -2)
+                isMobile ? 0.8 : 1.2,
+                new THREE.Vector3(-horizontalSpread, initialVerticalTop, -2),
+                new THREE.Vector3(-targetSpread, 2.5, -2)
             ),
 
             // Top-right corner (turquoise) - will form curve of R
             createBalloon(
                 0x5dd4bf,
-                1.4,
-                new THREE.Vector3(8, 5, -2),
-                new THREE.Vector3(-5, 0, -2)
+                isMobile ? 0.9 : 1.4,
+                new THREE.Vector3(horizontalSpread, initialVerticalTop, -2),
+                new THREE.Vector3(-targetSpread, 0, -2)
             ),
 
             // Bottom-left corner (blue) - will form stem of R
             createBalloon(
                 0x96c4ff,
-                1.3,
-                new THREE.Vector3(-8, -5, -2),
-                new THREE.Vector3(-5, -2.5, -2)
+                isMobile ? 0.85 : 1.3,
+                new THREE.Vector3(-horizontalSpread, initialVerticalBottom, -2),
+                new THREE.Vector3(-targetSpread, -2.5, -2)
             ),
 
             // Bottom-right corner (pink/peach) - will form top of S
             createBalloon(
                 0xffb4d4,
-                1.25,
-                new THREE.Vector3(8, -5, -2),
-                new THREE.Vector3(-1.5, 2.5, -2)
+                isMobile ? 0.8 : 1.25,
+                new THREE.Vector3(horizontalSpread, initialVerticalBottom, -2),
+                new THREE.Vector3(isMobile ? -0.5 : -1.5, 2.5, -2)
             ),
 
             // Right side (orange/yellow) - will form bottom of S
             createBalloon(
                 0xffc864,
-                1.2,
-                new THREE.Vector3(8, 0, -2),
-                new THREE.Vector3(-1.5, -2.5, -2)
+                isMobile ? 0.8 : 1.2,
+                new THREE.Vector3(horizontalSpread, 0, -2),
+                new THREE.Vector3(isMobile ? -0.5 : -1.5, -2.5, -2)
             ),
         ];
 
@@ -339,6 +352,36 @@ export default function ThreeBackground({ isHovered = false }: ThreeBackgroundPr
             cameraRef.current.aspect = window.innerWidth / window.innerHeight;
             cameraRef.current.updateProjectionMatrix();
             rendererRef.current.setSize(window.innerWidth, window.innerHeight);
+            
+            // Reposition balloons for new viewport size
+            const isMobile = window.innerWidth < 768;
+            const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+            const horizontalSpread = isMobile ? 2 : isTablet ? 6 : 8;
+            const targetSpread = isMobile ? 2.5 : isTablet ? 4 : 5;
+            const initialVerticalTop = isMobile ? 2.5 : 5;
+            const initialVerticalBottom = isMobile ? -2.5 : -5;
+            
+            // Update initial and target positions for each balloon
+            if (meshesRef.current[0]) {
+                (meshesRef.current[0] as any).initialPosition.set(-horizontalSpread, initialVerticalTop, -2);
+                (meshesRef.current[0] as any).targetPosition.x = -targetSpread;
+            }
+            if (meshesRef.current[1]) {
+                (meshesRef.current[1] as any).initialPosition.set(horizontalSpread, initialVerticalTop, -2);
+                (meshesRef.current[1] as any).targetPosition.x = -targetSpread;
+            }
+            if (meshesRef.current[2]) {
+                (meshesRef.current[2] as any).initialPosition.set(-horizontalSpread, initialVerticalBottom, -2);
+                (meshesRef.current[2] as any).targetPosition.x = -targetSpread;
+            }
+            if (meshesRef.current[3]) {
+                (meshesRef.current[3] as any).initialPosition.set(horizontalSpread, initialVerticalBottom, -2);
+                (meshesRef.current[3] as any).targetPosition.x = isMobile ? -0.5 : -1.5;
+            }
+            if (meshesRef.current[4]) {
+                (meshesRef.current[4] as any).initialPosition.set(horizontalSpread, 0, -2);
+                (meshesRef.current[4] as any).targetPosition.x = isMobile ? -0.5 : -1.5;
+            }
         };
         window.addEventListener('resize', handleResize);
 
